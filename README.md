@@ -23,6 +23,7 @@ python get_vessel_distances.py
 
 # Generate tumor distance maps
 python get_tumour_distances.py
+```
 
 ### 2. Conformal Prediction
 
@@ -33,8 +34,8 @@ python run_conf.py
 
 Option B: Single Threshold
 Set desired threshold in conf.py and run:
-```bash
 python conf.py
+```
 
 ### 3. Evaluation
 Generate evaluation report on the test set:
@@ -43,8 +44,8 @@ For multiple thresholds:
 python run_eval.py
 
 For single threshold:
-```bash
 python eval.py
+```
 
 File Structure
 conf.py: Core conformal prediction implementation
