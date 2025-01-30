@@ -68,12 +68,19 @@ File Structure:
 ### Requirements
 
 numpy>=1.20.0
+
 nibabel>=3.2.0  
+
 scipy>=1.7.0    
+
 tqdm>=4.60.0    
+
 pathlib>=1.0.0
+
 black        
+
 pylint        
+
 pytest 
 
 ## Citation
