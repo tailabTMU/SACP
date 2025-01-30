@@ -47,15 +47,23 @@ For single threshold:
 python eval.py
 ```
 
-File Structure
+File Structure:
+
 ``conf.py``: Core conformal prediction implementation
-crop.py: Data preprocessing for computational efficiency
-eval.py: Evaluation metrics for single threshold
-figure2.py, figure3.py: Visualization scripts
-get_tumour_distances.py: Generate tumor distance maps
-get_vessel_distances.py: Generate vessel distance maps
-run_conf.py: Batch processing for multiple thresholds
-run_eval.py: Batch evaluation for multiple thresholds
+
+``crop.py``: Data preprocessing for computational efficiency
+
+``eval.py``: Evaluation metrics for single threshold
+
+``figure2.py`` and ``figure3.py``: Visualization scripts
+
+``get_tumour_distances.py``: Generate tumor distance maps
+
+``get_vessel_distances.py``: Generate vessel distance maps
+
+``run_conf.py``: Batch processing for multiple thresholds
+
+``run_eval.py``: Batch evaluation for multiple thresholds
 
 ### Requirements
 
