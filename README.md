@@ -48,7 +48,7 @@ python eval.py
 ```
 
 File Structure
-conf.py: Core conformal prediction implementation
+``conf.py``: Core conformal prediction implementation
 crop.py: Data preprocessing for computational efficiency
 eval.py: Evaluation metrics for single threshold
 figure2.py, figure3.py: Visualization scripts
