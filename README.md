@@ -77,11 +77,13 @@ python conf.py
 
 ### 3. Evaluation
 Generate evaluation report on the test set:
+- For multiple thresholds:
 ```bash
-For multiple thresholds:
 python run_eval.py
+```
 
-For single threshold:
+- For single threshold:
+```bash
 python eval.py
 ```
 
