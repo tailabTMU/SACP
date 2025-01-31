@@ -11,6 +11,42 @@ The following files are required for each case:
 - Vessel distance maps (`DISTANCE*.npy`)
 - Tumor distance maps (`DISTANCETUMOUR*.npy`)
 
+## File Structure
+
+- ``conf.py``: Core conformal prediction implementation
+
+- ``crop.py``: Data preprocessing for computational efficiency
+
+- ``eval.py``: Evaluation metrics for single threshold
+
+- ``figure2.py`` and ``figure3.py``: Visualization scripts
+
+- ``get_tumour_distances.py``: Generate tumor distance maps
+
+- ``get_vessel_distances.py``: Generate vessel distance maps
+
+- ``run_conf.py``: Batch processing for multiple thresholds
+
+- ``run_eval.py``: Batch evaluation for multiple thresholds
+
+### Package Requirements
+
+- numpy>=1.20.0
+
+- nibabel>=3.2.0  
+
+- scipy>=1.7.0    
+
+- tqdm>=4.60.0    
+
+- pathlib>=1.0.0
+
+- black        
+
+- pylint        
+
+- pytest 
+
 ## Pipeline
 
 ### 1. Data Preparation
@@ -46,42 +82,6 @@ python run_eval.py
 For single threshold:
 python eval.py
 ```
-
-File Structure:
-
-``conf.py``: Core conformal prediction implementation
-
-``crop.py``: Data preprocessing for computational efficiency
-
-``eval.py``: Evaluation metrics for single threshold
-
-``figure2.py`` and ``figure3.py``: Visualization scripts
-
-``get_tumour_distances.py``: Generate tumor distance maps
-
-``get_vessel_distances.py``: Generate vessel distance maps
-
-``run_conf.py``: Batch processing for multiple thresholds
-
-``run_eval.py``: Batch evaluation for multiple thresholds
-
-### Requirements
-
-numpy>=1.20.0
-
-nibabel>=3.2.0  
-
-scipy>=1.7.0    
-
-tqdm>=4.60.0    
-
-pathlib>=1.0.0
-
-black        
-
-pylint        
-
-pytest 
 
 ## Citation
 If you use this code in your research, please cite: TODO
