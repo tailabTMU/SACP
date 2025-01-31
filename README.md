@@ -63,14 +63,14 @@ python get_tumour_distances.py
 
 ### 2. Conformal Prediction
 
-- Option A: Multiple Thresholds
+- **Option A:** Multiple Thresholds
   - Run conformal prediction for thresholds between 0.05 and 0.95 (0.05 intervals):
 ```bash
 python run_conf.py
 ```
 
-- Option B: Single Threshold
-  - Set desired threshold in conf.py and run:
+- **Option B:** Single Threshold
+  - Set desired threshold in ``conf.py`` and run:
 ```bash
 python conf.py
 ```
