@@ -65,6 +65,40 @@ class MultiLabelConformalPredictor:
             raise ValueError("Dimension mismatch after reordering")
 
         return probs, true_seg, distances, tumor_distances
+    
+    def raps(self, probs, labels, num_classes=11, k_reg=5, lam_reg=0.1, test=False):
+        labels = labels.astype(int)
+
+        # Since classes are on axis 0 and voxels on (1,2,3), we sort along axis 0 in descending order.
+        sorted_p_ind = np.argsort(probs, axis=0)[::-1, ...]  # shape: (num_classes, a, b, c)
+
+        reg_vec = np.array(k_reg * [0] + (num_classes - k_reg) * [lam_reg]).reshape(num_classes, 1, 1, 1)
+
+        # Rearrange probs based on sorted indices along the class axis.
+        p_srt = np.take_along_axis(probs, sorted_p_ind, axis=0)
+        p_srt_reg = p_srt + reg_vec
+
+        if test:
+            p_srt_reg_cumsum = p_srt_reg.cumsum(axis=0)
+            random_factor = np.random.rand(1, *labels.shape)
+
+            p_scores = p_srt_reg_cumsum - random_factor * p_srt_reg
+        else:
+            # the rank (position) where the true label occurs for each voxel
+            cal_L = np.argmax(sorted_p_ind == labels, axis=0)  # shape: (a, b, c)
+
+            p_cumsum = p_srt_reg.cumsum(axis=0)  # shape: (num_classes, a, b, c)
+
+            # the cumulative score at the rank corresponding to the true label.
+            p_score_true = np.take_along_axis(p_cumsum, cal_L[None, ...], axis=0).squeeze(0)
+            # p_srt_reg value at that rank.
+            p_val_true = np.take_along_axis(p_srt_reg, cal_L[None, ...], axis=0).squeeze(0)
+
+            random_factor = np.random.rand(*labels.shape)
+
+            p_scores = p_score_true - random_factor * p_val_true
+
+        return p_scores
 
     def compute_vessel_distances_from_array(self, distances: np.ndarray) -> Dict[str, np.ndarray]:
         if distances.shape[0] != len(self.vessel_indices):
@@ -102,19 +136,29 @@ class MultiLabelConformalPredictor:
         return 1 / (1 + np.exp(-alpha * ww))
 
     def compute_nonconformity_scores(self, probs: np.ndarray, true_seg: np.ndarray, distances: np.ndarray,
-                                     tumor_distances: np.ndarray, test=False):
+                                     tumor_distances: np.ndarray, method='lac', test=False):
 
         distance_maps, min_dist, vessel_weights = self.compute_vessel_distances_from_array(distances)
         scores = {}
+        
+        if method == 'aps':
+            base_score = self.raps(probs, true_seg, num_classes=11, k_reg=5, lam_reg=0.0, test=test)
+        elif method == 'raps':
+            base_score = self.raps(probs, true_seg, num_classes=11, k_reg=5, lam_reg=0.1, test=test)
+        else: 
+            base_score = None
 
         for label in range(0, 11):
             label_idx = label if label < probs.shape[0] else 0
             probs_label = probs[label_idx]
 
             if np.sum(true_seg == label) > 0:
-                base_score = (1 - probs_label)
+                # base_score = (1 - probs_label)
+                if method == 'lac':
+                    base_score = (1 - probs) if test else (1 - probs_label)
+                
                 if label == 10:
-                    final_score = base_score
+                    final_score = base_score[label_idx]
 
                     if test:
                         anatomical_weights = self.compute_anatomical_weights(min_dist, vessel_weights, probs_label,
@@ -122,9 +166,9 @@ class MultiLabelConformalPredictor:
                         scores[label] = (final_score * anatomical_weights).flatten()
                     else:
                         tp_mask = (true_seg == label)
-                        scores[label] = final_score[tp_mask]
+                        scores[label] = base_score[tp_mask]
                 else:
-                    scores[label] = base_score.flatten() if test else base_score[true_seg == label]
+                    scores[label] = base_score[label_idx].flatten() if test else base_score[true_seg == label]
 
         return scores
 
@@ -138,7 +182,7 @@ class MultiLabelConformalPredictor:
             try:
                 probs, true_seg, distances, tumor_dist = self.load_data(gt_file, prob_file, distance_file,
                                                                         tumor_dist_file)
-                scores = self.compute_nonconformity_scores(probs, true_seg, distances, tumor_dist)
+                scores = self.compute_nonconformity_scores(probs, true_seg, distances, tumor_dist, method='lac')
 
                 for label, label_scores in scores.items():
                     all_scores[label].extend(label_scores)
@@ -207,7 +251,7 @@ def evaluate_test_set(predictor: MultiLabelConformalPredictor,
 
     for gt_file, prob_file, distance_file, tumor_dist_file in test_files:
         probs, true_seg, distances, tumor_dist = predictor.load_data(gt_file, prob_file, distance_file, tumor_dist_file)
-        scores = predictor.compute_nonconformity_scores(probs, true_seg, distances, tumor_dist, test=True)
+        scores = predictor.compute_nonconformity_scores(probs, true_seg, distances, tumor_dist, method='lac', test=True)
 
         prediction_set = np.zeros((len(predictor.anatomical_labels), *true_seg.shape), dtype=np.uint8)
         gt_nib = nib.load(gt_file)
