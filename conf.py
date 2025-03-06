@@ -32,11 +32,11 @@ class MultiLabelConformalPredictor:
         }
 
         self.vessel_weights = {
-            'CeTr': 1.5,  # Celiac trunk
-            'HA': 1.5,  # Hepatic artery
-            'SMA': 1.5,  # Superior mesenteric artery
-            'PV': 1.2,  # Portal vein
-            'SMV': 1.2  # Superior mesenteric vein
+            'CeTr': 1.2,  # Celiac trunk
+            'HA': 1.2,  # Hepatic artery
+            'SMA': 1.2,  # Superior mesenteric artery
+            'PV': 1.5,  # Portal vein
+            'SMV': 1.5  # Superior mesenteric vein
         }
 
         self.vessel_indices = {
