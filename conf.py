@@ -66,7 +66,7 @@ class MultiLabelConformalPredictor:
 
         return probs, true_seg, distances, tumor_distances
     
-    def raps(self, probs, labels, num_classes=11, k_reg=5, lam_reg=0.1, test=False):
+    def raps(self, probs, labels, num_classes=11, k_reg=5, lam_reg=0.0, test=False):
         labels = labels.astype(int)
 
         # Since classes are on axis 0 and voxels on (1,2,3), we sort along axis 0 in descending order.
