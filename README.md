@@ -88,4 +88,11 @@ python eval.py
 ```
 
 ## Citation
-If you use this code in your research, please cite: TODO
+If you use this paper/code in your research, please cite:
+'''
+@inproceedings{bereskasacp,
+  title={SACP: Spatially-Adaptive Conformal Prediction in Uncertainty Quantification of Medical Image Segmentation},
+  author={Bereska, Jacqueline Isabel and Karimi, Hamed and Samavi, Reza},
+  booktitle={Medical Imaging with Deep Learning}
+}
+'''
