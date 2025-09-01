@@ -1,6 +1,6 @@
 # Anatomically-Aware Conformal Prediction for Pancreatic Cancer Segmentation
 
-This repository implements SACP (Spatially-Aware Conformal Prediction), a novel framework that extends conformal prediction to incorporate varying spatial importance in medical image segmentation. While traditional conformal prediction assumes uniform uncertainty across prediction regions, SACP specifically addresses the challenges in pancreatic ductal adenocarcinoma (PDAC) segmentation where different spatial regions - particularly near critical vascular structures - demand distinct levels of certainty.
+This repository implements SACP (Spatially-Adaptive Conformal Prediction), a novel framework that extends conformal prediction to incorporate varying spatial importance in medical image segmentation. While traditional conformal prediction assumes uniform uncertainty across prediction regions, SACP specifically addresses the challenges in pancreatic ductal adenocarcinoma (PDAC) segmentation where different spatial regions - particularly near critical vascular structures - demand distinct levels of certainty.
 
 ## Data Requirements
 
